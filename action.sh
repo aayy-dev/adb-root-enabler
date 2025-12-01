@@ -16,37 +16,18 @@ if ! command -v resetprop > /dev/null 2>&1; then
     exit 1
 fi
 
-# selinux rules to enable adb root
-RULES=(
-    "allow adbd adbd process setcurrent"
-    "allow adbd su process dyntransition"
-    "permissive { su }"
-)
+# patching sepolicy rules to enable adb root
+"$MAGISKPOLICY" --live "allow adbd adbd process setcurrent"
+"$MAGISKPOLICY" --live "allow adbd su process dyntransition"
+"$MAGISKPOLICY" --live "permissive { su }"
 
-# props needed to be resetted to enable adb root
-PROPS=(
-    "ro.secure 0"
-    "ro.adb.secure 0"
-    "ro.force.debuggable 1"
-    "ro.debuggable 1"
-    "service.adb.root 1"
-    "ctl.restart adbd"
-)
+# resetting props to enable adb root
+resetprop ro.secure 0
+resetprop ro.adb.secure 0
+resetprop ro.force.debuggable 1
+resetprop ro.debuggable 1
+resetprop service.adb.root 1
+resetprop ctl.restart adbd
 
-# patching sepolicy rules
-patch_rules(){
-    for rule in "${RULES[@]}"; do
-        "$MAGISKPOLICY" --live $rule
-    done
-}
-
-# resetting props
-reset_props(){
-    for prop in "${PROPS[@]}"; do
-        resetprop $prop
-    done
-}
-
-# main execution
-( patch_rules && reset_props ) && \
-echo -e "- ADB Root successfully enabled !\n-To undo the changes, reboot the device."
+echo "- ADB Root successfully enabled !"
+echo "- To undo the changes, reboot the device."
