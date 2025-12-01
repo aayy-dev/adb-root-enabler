@@ -34,7 +34,7 @@ on_install() {
 
     # install magiskpolicy
     ( mkdir -p "$MODPATH/system/bin" && \
-        unzip -o "$ZIPFILE" "magiskpolicy/${arch}/magiskpolicy" -d "$MODPATH/system/bin" >&2
+        unzip -oj "$ZIPFILE" "magiskpolicy/${arch}/magiskpolicy" -d "$MODPATH/system/bin" >&2
     ) || { echo "- Failed to install magiskpolicy"; exit 1; }
 
     # install scripts
