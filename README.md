@@ -10,4 +10,6 @@ This Magisk / KernelSU / Apatch module enables `adb root` on production Android 
 ### Screenshot
 ![ADB Root Enabler UI](screenshots/1.png)
 
-#### Credit: [I found this method after reading this xda forum comment](https://xdaforums.com/t/enable-adb-root-from-shell.4298567/post-90167637)
+#### Credits
+- [XDA Forum Comment](https://xdaforums.com/t/enable-adb-root-from-shell.4298567/post-90167637) - Method inspiration
+- [Magisk](https://github.com/topjohnwu/Magisk) - `magiskpolicy` tool
