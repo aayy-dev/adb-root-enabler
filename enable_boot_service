@@ -1,0 +1,7 @@
+# WARNING WARNING WARNING !!!
+# I highly encourage you to keep this disabled.
+# Only enable the boot service when necessary.
+# 0 = disable patching sepolicy and ADB root on boot
+# 1 = enable patching sepolicy and ADB root on boot
+
+PATCH_ON_BOOT=0
