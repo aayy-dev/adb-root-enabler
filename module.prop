@@ -1,6 +1,7 @@
 id=adb-root-enabler
 name=ADB Root enabler
-version=v1
-versionCode=1000
-author=@ravindu644
+version=v2
+versionCode=2000
+author=@U-rTrDD-fyi
 description=Enable ADB Root functionality in production devices.
+updateJson=https://raw.githubusercontent.com/U-rTrDD-fyi/adb-root-enabler/main/update.json

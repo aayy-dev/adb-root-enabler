@@ -1,7 +1,7 @@
-# WARNING WARNING WARNING !!!
-# I highly encourage you to keep this disabled.
-# Only enable the boot service when necessary.
-# 0 = disable patching sepolicy and ADB root on boot
-# 1 = enable patching sepolicy and ADB root on boot
+# Controls whether ADB root is patched automatically on every boot.
+# 0 = do NOT patch on boot; enable manually via the Magisk action button.
+# 1 = patch sepolicy + enable ADB root automatically on boot.
+#
+# This fork ships with boot patching ENABLED by default.
 
-PATCH_ON_BOOT=0
+PATCH_ON_BOOT=1

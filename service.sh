@@ -1,39 +1,27 @@
 #!/system/bin/sh
+MODDIR=${0%/*}
 
-MODDIR="$(dirname $(readlink -fq $0))"
+# read the boot toggle (PATCH_ON_BOOT)
 . "$MODDIR/enable_boot_service"
 
-# only run if enable_boot_service is 1
-if [ "${PATCH_ON_BOOT:-0}" -ne 1 ]; then
-    exit 0
-fi
+# only auto-patch on boot when enabled
+[ "${PATCH_ON_BOOT:-0}" -eq 1 ] || exit 0
 
-# Wait for boot to complete
-while [ "$(getprop sys.boot_completed)" != "1" ]; do
-    sleep 1
-done
+. "$MODDIR/functions.sh"
 
-# check magiskpolicy exists and is executable
-[ -z $MAGISKPOLICY ] && MAGISKPOLICY="${MODDIR}/system/bin/magiskpolicy"
+{
+    # wait for boot to complete
+    while [ "$(getprop sys.boot_completed)" != "1" ]; do
+        sleep 1.5
+    done
+    sleep 1.5
 
-if [ ! -x $MAGISKPOLICY ]; then 
-    exit 1
-fi
-
-# check if resetprop exists
-if ! command -v resetprop > /dev/null 2>&1; then
-    exit 1
-fi
-
-# patching sepolicy rules to enable adb root
-"$MAGISKPOLICY" --live "allow adbd adbd process setcurrent"
-"$MAGISKPOLICY" --live "allow adbd su process dyntransition"
-"$MAGISKPOLICY" --live "permissive { su }"
-
-# resetting props to enable adb root
-resetprop ro.secure 0
-resetprop ro.adb.secure 0
-resetprop ro.force.debuggable 1
-resetprop ro.debuggable 1
-resetprop service.adb.root 1
-resetprop ctl.restart adbd
+    # (re)apply for up to 60s in case the props get reset late in boot
+    END=$(($(date +%s) + 60))
+    while [ "$(date +%s)" -lt "$END" ]; do
+        if [ "$(getprop ro.secure)" != "0" ]; then
+            apply_adb_root
+        fi
+        sleep 3
+    done
+} &
