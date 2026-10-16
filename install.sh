@@ -9,7 +9,7 @@ LATESTARTSERVICE=true
 print_modname() {
     echo " "
     echo "  - ADB Root Enabler -  "
-    echo "    by  @U-rTrDD-fyi    "
+    echo "    by  @aayy-dev    "
     echo " "
 }
 
